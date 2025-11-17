@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { configobj } from "../config.js";
 
 export type Middleware = (
   req: Request,
@@ -20,4 +21,26 @@ export function middlewareLogResponses(
   });
 
   next();
+}
+
+export function middlewareMetricsInc(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  res.on("finish", () => {
+    configobj.fileserverHits++;
+  });
+  next();
+}
+
+export function handlerMetrics(_req: Request, res: Response) {
+  res.set("Content-Type", "text/plain; charset=utf-8");
+  res.send(`Hits: ${configobj.fileserverHits}`);
+}
+
+export function handlerReset(_req: Request, res: Response) {
+  configobj.fileserverHits = 0;
+  res.set("Content-Type", "text/plain; charset=utf-8");
+  res.send("Hits reset to 0");
 }
