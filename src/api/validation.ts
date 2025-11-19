@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { nextTick } from "process";
+import { BadRequestError } from "./errorhandler.js";
 
 export function validateHandler(
   req: Request,
@@ -18,7 +18,7 @@ export function validateHandler(
     }
 
     if (body.length > 140) {
-      throw new Error("Chirp is too long");
+      throw new BadRequestError("Chirp is too long. Max length is 140");
     }
 
     const words = body.split(" ");
