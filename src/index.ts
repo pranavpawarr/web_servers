@@ -8,11 +8,11 @@ import {
   middlewareMetricsInc,
 } from "./api/middleware.js";
 import { validateHandler } from "./api/validation.js";
+import { handleError } from "./api/errorhandler.js";
 
 const app = express();
 const PORT = 8080;
 app.use(express.json());
-
 app.use(middlewareLogResponses);
 
 app.use("/app", middlewareMetricsInc, express.static("./src/app"));
@@ -21,6 +21,7 @@ app.get("/admin/metrics", handlerMetrics);
 app.post("/admin/reset", handlerReset);
 app.post("/api/validate_chirp", validateHandler);
 
+app.use(handleError);
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
