@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { configobj } from "../config.js";
+import { config } from "../config.js";
 
 export type Middleware = (
   req: Request,
@@ -29,7 +29,7 @@ export function middlewareMetricsInc(
   next: NextFunction
 ) {
   res.on("finish", () => {
-    configobj.fileserverHits++;
+    config.fileserverHits++;
   });
   next();
 }
@@ -39,13 +39,13 @@ export function handlerMetrics(_req: Request, res: Response) {
   res.send(`<html>
   <body>
     <h1>Welcome, Chirpy Admin</h1>
-    <p>Chirpy has been visited ${configobj.fileserverHits} times!</p>
+    <p>Chirpy has been visited ${config.fileserverHits} times!</p>
   </body>
 </html>`);
 }
 
 export function handlerReset(_req: Request, res: Response) {
-  configobj.fileserverHits = 0;
+  config.fileserverHits = 0;
   res.set("Content-Type", "text/plain; charset=utf-8");
   res.send("Hits reset to 0");
 }
