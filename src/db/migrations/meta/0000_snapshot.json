@@ -1,10 +1,57 @@
 {
-  "id": "6c5c78c1-01a9-484b-b054-c37d15baf73a",
-  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.users": {
+    "chirps": {
+      "name": "chirps",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "notNull": true,
+          "default": "now()"
+        },
+        "body": {
+          "name": "body",
+          "type": "varchar(140)",
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "notNull": true
+        }
+      },
+      "indexes": [],
+      "uniqueConstraints": [],
+      "foreignKeys": [
+        {
+          "name": "chirps_user_id_users_id_fk",
+          "tableFrom": "chirps",
+          "columnsFrom": ["user_id"],
+          "tableTo": "users",
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      ],
+      "compositePKs": []
+    },
+    "users": {
       "name": "users",
       "schema": "",
       "columns": {
@@ -18,50 +65,30 @@
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
-          "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp",
-          "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
         "email": {
           "name": "email",
           "type": "varchar(256)",
-          "primaryKey": false,
           "notNull": true
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "users_email_unique": {
+      "indexes": [],
+      "uniqueConstraints": [
+        {
           "name": "users_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
-      },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
+      ],
+      "foreignKeys": [],
+      "compositePKs": []
     }
-  },
-  "enums": {},
-  "schemas": {},
-  "sequences": {},
-  "roles": {},
-  "policies": {},
-  "views": {},
-  "_meta": {
-    "columns": {},
-    "schemas": {},
-    "tables": {}
   }
 }
