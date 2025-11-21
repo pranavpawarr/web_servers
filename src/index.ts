@@ -1,5 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
-import "dotenv/config";
 import postgres from "postgres";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
@@ -14,6 +15,7 @@ import { handlerMetrics } from "./api/metrics.js";
 import { handlerReset } from "./api/reset.js";
 
 import { config } from "./config.js";
+import { userHandler } from "./api/users.js";
 
 const migrationClient = postgres(config.db.url, { max: 1 });
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -28,6 +30,7 @@ app.get("/api/healthz", handlerReadiness);
 app.get("/admin/metrics", handlerMetrics);
 app.post("/admin/reset", handlerReset);
 app.post("/api/validate_chirp", validateHandler);
+app.post("/api/users", userHandler);
 
 app.use(handleError);
 app.listen(config.api.port, () => {
