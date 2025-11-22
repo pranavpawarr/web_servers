@@ -18,6 +18,7 @@ import { userHandler } from "./api/users.js";
 import { handlerChirpsCreate } from "./api/chirps.js";
 import { getAllChirps } from "./api/getallchirps.js";
 import { getChirpById } from "./api/getchirp.js";
+import { userLogin } from "./api/userlogin.js";
 
 const migrationClient = postgres(config.db.url, { max: 1 });
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -37,6 +38,7 @@ app.post("/admin/reset", handlerReset);
 app.post("/api/validate_chirp", validateHandler);
 app.post("/api/users", userHandler);
 app.post("/api/chirps", handlerChirpsCreate);
+app.post("/api/login", userLogin);
 
 app.use(handleError);
 app.listen(config.api.port, () => {
