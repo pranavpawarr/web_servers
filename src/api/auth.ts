@@ -5,6 +5,7 @@ import {
   BadRequestError,
   UserNotAuthenticatedError,
 } from "../api/errorhandler.js";
+import { randomBytes } from "node:crypto";
 
 type Payload = Pick<JwtPayload, "iss" | "sub" | "iat" | "exp">;
 
@@ -74,4 +75,8 @@ export function extractBearerToken(authHeader: string): string {
     throw new BadRequestError("Malformed authorization header");
   }
   return parts[1].trim();
+}
+
+export function makeRefreshToken(): string {
+  return randomBytes(32).toString("hex");
 }

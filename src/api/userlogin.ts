@@ -1,8 +1,8 @@
 import { Response, Request } from "express";
 import { db } from "../db/index.js";
-import { users } from "../db/schema.js";
+import { refreshTokens, users } from "../db/schema.js";
 import { eq } from "drizzle-orm";
-import { checkPasswordHash, makeJWT } from "./auth.js";
+import { checkPasswordHash, makeJWT, makeRefreshToken } from "./auth.js";
 import { config } from "../config.js";
 
 export async function userLogin(req: Request, res: Response) {
@@ -27,14 +27,19 @@ export async function userLogin(req: Request, res: Response) {
       return res.status(401).json({ error: "Incorrect email or password" });
     }
 
-    const expires =
-      typeof expiresInSeconds === "number" &&
-      expiresInSeconds > 0 &&
-      expiresInSeconds <= 3600
-        ? expiresInSeconds
-        : 3600;
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 60);
 
-    const token = makeJWT(user.id, expires, config.api.jwtSecret);
+    const token = makeJWT(user.id, 3600, config.api.jwtSecret);
+
+    const refreshToken = makeRefreshToken();
+
+    await db.insert(refreshTokens).values({
+      token: refreshToken,
+      userId: user.id,
+      expiresAt,
+      revokedAt: null,
+    });
 
     return res.status(200).json({
       id: user.id,
@@ -42,6 +47,7 @@ export async function userLogin(req: Request, res: Response) {
       updatedAt: user.updatedAt,
       email: user.email,
       token,
+      refreshToken,
     });
   } catch (err) {
     console.error(err);
