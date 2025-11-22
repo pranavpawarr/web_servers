@@ -31,7 +31,7 @@ export class BadRequestError extends Error {
   }
 }
 
-export class UnauthorizedError extends Error {
+export class UserNotAuthenticatedError extends Error {
   statusCode: number;
 
   constructor(message: string) {
@@ -39,7 +39,7 @@ export class UnauthorizedError extends Error {
     this.name = "UnauthorizedError";
     this.statusCode = 403;
 
-    Object.setPrototypeOf(this, UnauthorizedError.prototype);
+    Object.setPrototypeOf(this, UserNotAuthenticatedError.prototype);
   }
 }
 

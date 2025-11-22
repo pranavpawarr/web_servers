@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { makeJWT, validateJWT } from "../api/auth.js";
-import { hashPassword, checkPasswordhash } from "./auth";
+import { hashPassword, checkPasswordHash } from "./auth";
 
 describe("JWT Tests", () => {
   const secret = "testSecret";
@@ -44,12 +44,12 @@ describe("Password Hashing", () => {
   });
 
   it("should return true for the correct password", async () => {
-    const result = await checkPasswordhash(password1, hash1);
+    const result = await checkPasswordHash(password1, hash1);
     expect(result).toBe(true);
   });
 
   it("should return false for incorrect password", async () => {
-    const result = await checkPasswordhash(password2, hash1);
+    const result = await checkPasswordHash(password2, hash1);
     expect(result).toBe(false);
   });
 });
