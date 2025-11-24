@@ -4,7 +4,7 @@ import {
   varchar,
   uuid,
   text,
-  integer,
+  boolean,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -18,6 +18,7 @@ export const users = pgTable("users", {
   hashedPassword: varchar("hashed_password", { length: 255 })
     .default("unset")
     .notNull(),
+  isChirpyRed: boolean("is_chirpy_red").default(false).notNull(),
 });
 
 export type NewUser = typeof users.$inferInsert;

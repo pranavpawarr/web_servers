@@ -15,6 +15,13 @@
       "when": 1763839786321,
       "tag": "0001_white_the_fallen",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1763981188162,
+      "tag": "0002_polite_secret_warriors",
+      "breakpoints": true
     }
   ]
 }

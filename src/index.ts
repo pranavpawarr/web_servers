@@ -23,6 +23,7 @@ import { refreshTokenHandler } from "./api/refresh.js";
 import { revokeTokenHandler } from "./api/revoke.js";
 import { authHandler } from "./api/authHandler.js";
 import { deleteChirpHandler } from "./api/deletechirp.js";
+import { polkaWebhookHandler } from "./api/webhook.js";
 
 const migrationClient = postgres(config.db.url, { max: 1 });
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -45,6 +46,7 @@ app.post("/api/chirps", handlerChirpsCreate);
 app.post("/api/login", userLogin);
 app.post("/api/refresh", refreshTokenHandler);
 app.post("/api/revoke", revokeTokenHandler);
+app.post("/api/polka/webhooks", polkaWebhookHandler); // ✅ With leading slash
 
 app.put("/api/users", authHandler);
 app.delete("/api/chirps/:chirpID", deleteChirpHandler);

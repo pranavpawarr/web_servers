@@ -46,6 +46,7 @@ export async function userLogin(req: Request, res: Response) {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
       email: user.email,
+      isChirpyRed: user.isChirpyRed, // Add this
       token,
       refreshToken,
     });

@@ -77,6 +77,22 @@ export function extractBearerToken(authHeader: string): string {
   return parts[1].trim();
 }
 
+export function getAPIKey(req: Request): string {
+  const authHeader = req.get("Authorization");
+  if (!authHeader) {
+    throw new UserNotAuthenticatedError("Missing API key");
+  }
+  return extractAPIKey(authHeader);
+}
+
+export function extractAPIKey(authHeader: string): string {
+  const parts = authHeader.split(" ");
+  if (parts.length !== 2 || parts[0] !== "ApiKey") {
+    throw new UserNotAuthenticatedError("Malformed API key");
+  }
+  return parts[1].trim();
+}
+
 export function makeRefreshToken(): string {
   return randomBytes(32).toString("hex");
 }

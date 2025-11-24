@@ -24,7 +24,13 @@ export async function userHandler(req: Request, res: Response) {
       createdAt: now,
       updatedAt: now,
     })
-    .returning();
+    .returning({
+      id: users.id,
+      email: users.email,
+      createdAt: users.createdAt,
+      updatedAt: users.updatedAt,
+      isChirpyRed: users.isChirpyRed,
+    });
 
   if (!newUser) {
     return res.status(500).json({ error: "Failed to Create User" });
@@ -35,5 +41,6 @@ export async function userHandler(req: Request, res: Response) {
     email: newUser.email,
     createdAt: newUser.createdAt,
     updatedAt: newUser.updatedAt,
+    isChirpyRed: newUser.isChirpyRed,
   });
 }
