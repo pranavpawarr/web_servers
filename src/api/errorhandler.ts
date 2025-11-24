@@ -37,7 +37,7 @@ export class UserNotAuthenticatedError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "UnauthorizedError";
-    this.statusCode = 403;
+    this.statusCode = 401;
 
     Object.setPrototypeOf(this, UserNotAuthenticatedError.prototype);
   }
