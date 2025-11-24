@@ -22,6 +22,7 @@ import { userLogin } from "./api/userlogin.js";
 import { refreshTokenHandler } from "./api/refresh.js";
 import { revokeTokenHandler } from "./api/revoke.js";
 import { authHandler } from "./api/authHandler.js";
+import { deleteChirpHandler } from "./api/deletechirp.js";
 
 const migrationClient = postgres(config.db.url, { max: 1 });
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -46,6 +47,7 @@ app.post("/api/refresh", refreshTokenHandler);
 app.post("/api/revoke", revokeTokenHandler);
 
 app.put("/api/users", authHandler);
+app.delete("/api/chirps/:chirpID", deleteChirpHandler);
 
 app.use(handleError);
 app.listen(config.api.port, () => {
